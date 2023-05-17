@@ -83,7 +83,9 @@
   "Construct shell cmd to open excalidraw file with PATH for OS-TYPE."
   (if (eq os-type 'darwin)
       (concat "open " (shell-quote-argument path))
-    (concat "xdg-open " (shell-quote-argument path))))
+    (if (eq os-type 'windows-nt)
+	(concat "powershell -c Invoke-Item '" (shell-quote-argument path) "'")
+      (concat "xdg-open " (shell-quote-argument path)))))
 
 (defun org-excalidraw--open-file-from-svg (path)
   "Open corresponding .excalidraw file for svg located at PATH."
